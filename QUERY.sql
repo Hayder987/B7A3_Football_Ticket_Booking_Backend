@@ -27,13 +27,13 @@ CREATE TABLE IF NOT EXISTS Matches (
 CREATE TABLE IF NOT EXISTS Bookings (
     booking_id SERIAL PRIMARY KEY,
     user_id INT NOT NULL,
-    match_id INT NULL, 
+    match_id int NOT NULL,
     seat_number VARCHAR(20) NULL, 
     payment_status VARCHAR(50) NULL CHECK (payment_status IN ('Pending', 'Confirmed', 'Cancelled', 'Refunded')),
     total_cost DECIMAL(10, 2) NOT NULL,
     
     CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
-    CONSTRAINT fk_match FOREIGN KEY (match_id) REFERENCES Matches(match_id) ON DELETE SET NULL,
+    CONSTRAINT fk_match FOREIGN KEY (match_id) REFERENCES Matches(match_id) ON DELETE CASCADE,
 
     CONSTRAINT unique_user_match_seat UNIQUE (user_id, match_id, seat_number)
 );
