@@ -64,6 +64,10 @@ INSERT INTO Bookings (booking_id, user_id, match_id, seat_number, payment_status
 (505, 3, 102, 'C-20', 'Pending', 120.00);
 
 
+SELECT * FROM users;
+SELECT * FROM matches;
+SELECT * FROM bookings;
+
 -------------------------------------Query Part ----------------------------------------------------
 
 --Query 1: Retrieve all upcoming football matches belonging to the 'Champions League' where the match status is 'Available'.
@@ -102,4 +106,17 @@ SELECT
 FROM Bookings
 WHERE payment_status IS NULL;
 
+
+-- Query 4: Retrieve match booking details along with the User's full name and the scheduled Match fixture teams.
+
+SELECT
+    b.booking_id,
+    u.full_name,
+    m.fixture,
+    b.total_cost
+FROM Bookings b
+INNER JOIN Users u
+ON b.user_id = u.user_id
+INNER JOIN Matches m
+ON b.match_id = m.match_id;
 
