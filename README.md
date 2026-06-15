@@ -26,6 +26,8 @@ The database schema architecture consists of 3 core operational entities: `Users
 
 📌 **Official Project ERD Link:** [View Diagram on Google Drive](https://drive.google.com/file/d/1KbUpjLREfPoc83Vfbd59pC3ffSc7zqmL/view?usp=sharing)
 
+📌 **Assignment Requirement Link:** [View Requirement](https://github.com/Apollo-Level2-Web-Dev/B7A3)
+
 ---
 
 ## 🛠️ Database Schema Implementation (PostgreSQL)
@@ -53,17 +55,16 @@ CREATE TABLE IF NOT EXISTS Matches (
 CREATE TABLE IF NOT EXISTS Bookings (
     booking_id SERIAL PRIMARY KEY,
     user_id INT NOT NULL,
-    match_id INT NOT NULL,
-    seat_number VARCHAR(20),
+    match_id int NOT NULL,
+    seat_number VARCHAR(20) NULL, 
     payment_status VARCHAR(50) NULL CHECK (payment_status IN ('Pending', 'Confirmed', 'Cancelled', 'Refunded')),
     total_cost DECIMAL(10, 2) NOT NULL,
     
     CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
     CONSTRAINT fk_match FOREIGN KEY (match_id) REFERENCES Matches(match_id) ON DELETE CASCADE,
-    
-    CONSTRAINT unique_match_seat UNIQUE (match_id, seat_number)
-);
 
+    CONSTRAINT unique_user_match_seat UNIQUE (user_id, match_id, seat_number)
+);
 
 ## 👨‍💻 Developer & Author Profile
 
