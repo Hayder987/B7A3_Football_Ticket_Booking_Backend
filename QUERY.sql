@@ -5,7 +5,9 @@ DROP TABLE IF EXISTS Bookings CASCADE;
 DROP TABLE IF EXISTS Matches CASCADE;
 DROP TABLE IF EXISTS Users CASCADE;
 
+
 -- 1. Create Users Table
+
 CREATE TABLE IF NOT EXISTS Users (
     user_id SERIAL PRIMARY KEY,
     full_name VARCHAR(100) NOT NULL,
@@ -14,7 +16,9 @@ CREATE TABLE IF NOT EXISTS Users (
     phone_number VARCHAR(20) 
 );
 
+
 -- 2. Create Matches Table
+
 CREATE TABLE IF NOT EXISTS Matches (
     match_id SERIAL PRIMARY KEY,
     fixture VARCHAR(80) NOT NULL,
@@ -23,7 +27,9 @@ CREATE TABLE IF NOT EXISTS Matches (
     match_status VARCHAR(40) NOT NULL CHECK (match_status IN ('Available', 'Selling Fast', 'Sold Out', 'Postponed'))
 );
 
+
 -- 3. Create Bookings Table 
+
 CREATE TABLE IF NOT EXISTS Bookings (
     booking_id SERIAL PRIMARY KEY,
     user_id INT NOT NULL,
@@ -41,13 +47,16 @@ CREATE TABLE IF NOT EXISTS Bookings (
 
 
 -- DATA SEEDING: INSERT SAMPLE DATA INTO USERS
+
 INSERT INTO Users (user_id, full_name, email, role, phone_number) VALUES
 (1, 'Tanvir Rahman', 'tanvir@mail.com', 'Football Fan', '+8801711111111'),
 (2, 'Asif Haque', 'asif@mail.com', 'Football Fan', '+8801722222222'),
 (3, 'Sajjad Rahman', 'sajjad@mail.com', 'Ticket Manager', '+8801733333333'),
 (4, 'Jannat Ara', 'jannat@mail.com', 'Football Fan', NULL);
 
+
 -- DATA SEEDING: INSERT SAMPLE DATA INTO MATCHES
+
 INSERT INTO Matches (match_id, fixture, tournament_category, base_ticket_price, match_status) VALUES
 (101, 'Real Madrid vs Barcelona', 'Champions League', 150.00, 'Available'),
 (102, 'Man City vs Liverpool', 'Premier League', 120.00, 'Selling Fast'),
@@ -55,7 +64,9 @@ INSERT INTO Matches (match_id, fixture, tournament_category, base_ticket_price, 
 (104, 'AC Milan vs Inter Milan', 'Serie A', 90.00, 'Sold Out'),
 (105, 'Juventus vs Roma', 'Serie A', 80.00, 'Available');
 
+
 -- DATA SEEDING: INSERT SAMPLE DATA INTO BOOKINGS
+
 INSERT INTO Bookings (booking_id, user_id, match_id, seat_number, payment_status, total_cost) VALUES
 (501, 1, 101, 'A-12', 'Confirmed', 150.00),
 (502, 1, 102, 'B-04', 'Confirmed', 120.00),
@@ -68,9 +79,8 @@ SELECT * FROM users;
 SELECT * FROM matches;
 SELECT * FROM bookings;
 
--------------------------------------Query Part ----------------------------------------------------
 
---Query 1: Retrieve all upcoming football matches belonging to the 'Champions League' where the match status is 'Available'.
+--Query 1: 
 
 SELECT
   match_id,
@@ -83,7 +93,7 @@ WHERE
   AND match_status = 'Available';
 
 
--- Query 2: Search for all users whose full names start with 'Tanvir' or contain the phrase 'Haque' (case-insensitive).
+-- Query 2: 
 
 SELECT
     user_id,
@@ -95,7 +105,7 @@ OR full_name ILIKE '%Haque%';
 
 
 
--- Query 3: Retrieve all booking records where the payment status is missing (NULL), replacing the empty result with 'Action Required'.
+-- Query 3: 
 
 SELECT
     booking_id,
@@ -107,7 +117,7 @@ FROM Bookings
 WHERE payment_status IS NULL;
 
 
--- Query 4: Retrieve match booking details along with the User's full name and the scheduled Match fixture teams.
+-- Query 4: 
 
 SELECT
   b.booking_id,
@@ -120,7 +130,7 @@ FROM
   INNER JOIN Matches m ON b.match_id = m.match_id;
 
 
--- Query 5: Display a comprehensive list of all users and their booking IDs, ensuring that fans who have never bought a ticket are still listed.
+-- Query 5: 
 
 SELECT
   u.user_id,
@@ -131,7 +141,8 @@ FROM
   LEFT JOIN bookings b ON u.user_id = b.user_id;
 
 
--- Query 6: Find all ticket bookings where the total cost is strictly higher than the average cost of all ticket bookings.
+-- Query 6: 
+
 SELECT
   booking_id,
   match_id,
@@ -142,7 +153,7 @@ WHERE total_cost > (
   );
 
 
--- Query 7: Retrieve the top 2 most expensive matches sorted by base ticket price, skipping the absolute highest premium match.
+-- Query 7: 
 
 SELECT match_id, fixture, base_ticket_price
 FROM Matches
